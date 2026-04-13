@@ -38,3 +38,15 @@ def passwordGenerator(leng):
     return password
 
 generatedPass = passwordGenerator(leng)
+
+mi_key = Fernet.generate_key()
+padlock = Fernet(mi_key)
+# encriptar
+plaintext = generatedPass.encode('utf-8')
+ciphertext = padlock.encrypt(plaintext)
+print(f"Contraseña cifrada: {ciphertext.decode()}")
+
+# desencriptar
+recoveredPass = padlock.decrypt(ciphertext)
+recoveredText = recoveredPass.decode('utf-8')
+print(f"Contraseña recuperada: {recoveredText}")
