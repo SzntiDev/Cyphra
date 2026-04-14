@@ -1,7 +1,9 @@
-import random
+import secrets
 import string
+import os
 from cryptography.fernet import Fernet
 
+# Función para solicitar y validar la longitud de la contraseña
 def setleng():
     while True:
         try:
@@ -15,38 +17,70 @@ def setleng():
         except ValueError:
             print("Error: Debes introducir un número entero válido.")
 
-leng = setleng()
+# --- INICIO DEL PROGRAMA ---
 
-print("Longitud elegida: ",leng)
+# 1. Obtener la longitud deseada
+leng = setleng()
+print("Longitud elegida: ", leng)
+
+# Función para generar la contraseña aleatoria segura
 def passwordGenerator(leng):
     contra = []
-    for l in range(leng):
-        digit = random.choice(string.ascii_letters + string.digits + string.punctuation + " ")
-        
-        contra.append(digit)
-    password = "".join(contra)
-    sino = input("Desea mostrar la contraseña? (y/n)")
+    # Definimos los caracteres posibles (letras, números, símbolos y espacio)
+    caracteres = string.ascii_letters + string.digits + string.punctuation + " "
     
-    if sino == "y" or sino == "n":
-        
-        if sino == "y":
-
-            print("La contraseña es: " + password)
-
+    for l in range(leng):
+        # Usamos secrets para una aleatoriedad segura (CSPRNG)
+        digit = secrets.choice(caracteres)
+        contra.append(digit)
+    
+    password = "".join(contra)
+    
+    # Opción para visualizar lo que se generó
+    sino = input("¿Desea mostrar la contraseña? (y/n)").lower()
+    if sino == "y":
+        print("La contraseña es: " + password)
     else:
-        print("Contraseña oculta")
+        print("Contraseña oculta.")
+        
     return password
 
+# 2. Generar la contraseña base
 generatedPass = passwordGenerator(leng)
 
-mi_key = Fernet.generate_key()
-padlock = Fernet(mi_key)
-# encriptar
-plaintext = generatedPass.encode('utf-8')
-ciphertext = padlock.encrypt(plaintext)
-print(f"Contraseña cifrada: {ciphertext.decode()}")
+# Función para gestionar la llave de cifrado (Cargar o crear nueva)
+def genkey():
+    # Si ya existe la llave, la leemos para poder descifrar después
+    if os.path.exists("key.txt"):
+        with open("key.txt", "rb") as archivo:
+            mi_key = archivo.read()
+    else:
+        # Si no existe, creamos una llave única y la guardamos en un archivo
+        mi_key = Fernet.generate_key()
+        with open("key.txt", "wb") as archivo:
+            archivo.write(mi_key)
+    return mi_key
 
-# desencriptar
-recoveredPass = padlock.decrypt(ciphertext)
-recoveredText = recoveredPass.decode('utf-8')
-print(f"Contraseña recuperada: {recoveredText}")
+# 3. Obtener la llave necesaria para el cifrado
+mi_key = genkey()
+
+# Función para cifrar el texto usando la llave Fernet
+def encrypt(password, mi_key):
+    padlock = Fernet(mi_key)
+    # Fernet necesita los datos en formato bytes
+    plaintext = password.encode('utf-8')
+    ciphertext = padlock.encrypt(plaintext)
+    print(f"Token cifrado generado con éxito.")
+    return ciphertext
+
+# 4. Cifrar la contraseña generada
+token_final = encrypt(generatedPass, mi_key)
+
+# Función para guardar el token cifrado en un archivo externo
+def guardar_en_archivo(token):
+    with open("token.txt", "wb") as f:
+        f.write(token)
+    print("El resultado se ha guardado en token.txt")
+
+# 5. Ejecutar el guardado final
+guardar_en_archivo(token_final)
