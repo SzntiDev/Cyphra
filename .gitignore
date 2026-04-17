@@ -1,0 +1,16 @@
+# Security: Never upload keys or vault data
+key.txt
+vault.csv
+token.txt
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

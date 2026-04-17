@@ -1,0 +1,128 @@
+:root {
+    --primary: #52826D;
+    --secondary: #1a1c1f;
+    --tertiary: #a36966;
+    --neutral: #121417;
+    --text: #E2E8F0;
+    --background: #111316;
+    --font-main: 'Manrope', sans-serif;
+}
+
+/* Configuraciones Globales */
+body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: var(--font-main);
+    margin: 0;
+}
+
+/* Ejemplo de cómo usar los colores */
+.glow-primary {
+    box-shadow: 0 0 20px rgba(82, 130, 109, 0.2);
+}
+
+.bg-card-custom {
+    background-color: var(--secondary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* --- NUEVO: Estilo de Tarjetas (Cards) --- */
+
+/* Contenedor de la tarjeta */
+.card-vault {
+    background-color: var(--secondary);
+    /* Mismo tono que el sidebar */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    /* Bordes redondeados */
+    padding: 24px;
+    /* Espaciado interno */
+    margin-bottom: 16px;
+    /* Separación entre tarjetas */
+    transition: all 0.3s ease;
+    /* Transición suave para efectos hover */
+    cursor: pointer;
+    /* Indica que es clickeable */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+}
+
+/* Efecto al pasar el mouse (Hover) */
+.card-vault:hover {
+    transform: translateY(-4px);
+    /* Se levanta un poco */
+    border-color: var(--primary);
+    /* Cambia el borde a verde */
+    box-shadow: 0 10px 15px -3px rgba(82, 130, 109, 0.15);
+    /* Sombra más pronunciada (Glow) */
+}
+
+/* Estilo del título de la tarjeta (ej: Instagram) */
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+/* Estilo del usuario/email */
+.card-user {
+    font-size: 0.9rem;
+    color: #9CA3AF;
+    /* Gris claro */
+    margin-bottom: 12px;
+}
+
+/* Contenedor de los botones de acción */
+.card-actions {
+    display: flex;
+    gap: 8px;
+    /* Espacio entre botones */
+}
+
+/* Botones dentro de la tarjeta (Copiar, Editar, Eliminar) */
+.card-btn {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Botón Copiar (Verde) */
+.btn-copy {
+    background-color: rgba(82, 130, 109, 0.1);
+    color: var(--primary);
+}
+
+.btn-copy:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Botón Editar (Azul/Gris) */
+.btn-edit {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #9CA3AF;
+}
+
+.btn-edit:hover {
+    background-color: #374151;
+    color: white;
+}
+
+/* Botón Eliminar (Rojo) */
+.btn-delete {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #EF4444;
+}
+
+.btn-delete:hover {
+    background-color: #EF4444;
+    color: white;
+}

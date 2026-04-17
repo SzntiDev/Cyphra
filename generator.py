@@ -20,11 +20,7 @@ def passwordGenerator(leng):
                 password = "".join(contra)
                 
                 # Opción para visualizar lo que se generó
-                sino = input("¿Desea mostrar la contraseña? (y/n)").lower()
-                if sino == "y":
-                    print("La contraseña es: " + password)
-                else:
-                    print("Contraseña oculta.")
+               
                     
                 return password
 def setleng():
@@ -64,7 +60,7 @@ def encrypt(password, mi_key):
         ciphertext = padlock.encrypt(plaintext)
         print(f"Token cifrado generado con éxito.")
         return ciphertext
-def ver_contraseñas():
+def ver_contraseñas(servicio_a_buscar, mi_key):
                 with open("vault.csv", "r") as archivo:
                     lector = csv.reader(archivo)
                     for fila in lector:
@@ -76,32 +72,53 @@ def ver_contraseñas():
                             print(f"El servicio es: {fila[0]}")
                             print(f"El usuario es: {fila[1]}")
                             print(f"La contraseña es: {passwordRecuperada}")
+
+def ver_todo(mi_key):
+    lista_completa = []
+    if os.path.exists("vault.csv"):
+        with open("vault.csv", "r") as archivo:
+            lector = csv.reader(archivo)
+            for fila in lector:
+                if len(fila) < 3: continue
+                try:
+                    token_en_bytes = fila[2].encode()
+                    padlock = Fernet(mi_key)
+                    decrypted = padlock.decrypt(token_en_bytes).decode()
+                    lista_completa.append({
+                        "servicio": fila[0],
+                        "usuario": fila[1],
+                        "password": decrypted
+                    })
+                except Exception:
+                    continue
+    return lista_completa
 menu = """
 1. Generar contraseña
 2. Ver contraseñas
 3. Salir
 """
 mi_key = genkey()
-while flag: 
-    print(menu)
-    try:
-        opc = int(input("Selecciona una opción: "))
-    except ValueError:
-        print("Error: Debes introducir un número entero válido.")
-        continue
-    match opc:
-        case 1:     
-            leng = setleng()
-            print("Longitud elegida: ", leng)
-            servicio = input("¿Para qué sitio/app es esta contraseña? (ej: Instagram): ")
-            usuario = input("Introduce el nombre de usuario o email: ")
-            generatedPass = passwordGenerator(leng)
-            token_final = encrypt(generatedPass, mi_key)
+if __name__ == "__main__":
+    while flag: 
+        print(menu)
+        try:
+            opc = int(input("Selecciona una opción: "))
+        except ValueError:
+            print("Error: Debes introducir un número entero válido.")
+            continue
+        match opc:
+            case 1:     
+                leng = setleng()
+                print("Longitud elegida: ", leng)
+                servicio = input("¿Para qué sitio/app es esta contraseña? (ej: Instagram): ")
+                usuario = input("Introduce el nombre de usuario o email: ")
+                generatedPass = passwordGenerator(leng)
+                token_final = encrypt(generatedPass, mi_key)
 
-            guardar_en_archivo(servicio, usuario, token_final)
-        case 2:
-            servicio_a_buscar =(input("¿Qué servicio quieres buscar? ")).lower()              
-            ver_contraseñas()                    
-        case 3:
-            flag = False
-            print("Adiós")
+                guardar_en_archivo(servicio, usuario, token_final)
+            case 2:
+                servicio_a_buscar =(input("¿Qué servicio quieres buscar? ")).lower()              
+                ver_contraseñas(servicio_a_buscar, mi_key)                    
+            case 3:
+                flag = False
+                print("Adiós")

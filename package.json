@@ -1,0 +1,27 @@
+{
+  "name": "cyphra",
+  "version": "1.0.0",
+  "description": "Cyphra is a secure, lightweight password generator and vault utility written in Python. It provides cryptographically secure password generation paired with a robust encryption layer to keep your sensitive data safe.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SzntiDev/Cyphra.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SzntiDev/Cyphra/issues"
+  },
+  "homepage": "https://github.com/SzntiDev/Cyphra#readme",
+  "dependencies": {
+    "electron": "^41.2.1",
+    "python-shell": "^5.0.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^26.8.1"
+  }
+}
