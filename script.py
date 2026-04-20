@@ -13,7 +13,9 @@ if modo == "1":
     leng = int(sys.argv[2])
     sitio = sys.argv[3]
     user = sys.argv[4]
-    
+    # Anotamos en el historial que alguien generó una clave
+    generator.registrar_evento("Nueva Contraseña", f"Credencial generada y encriptada para {sitio}", "SECURE")
+
     # Ejecutamos las herramientas en orden
     password = generator.passwordGenerator(leng)
     token = generator.encrypt(password, mi_key)
@@ -33,3 +35,7 @@ elif modo == "3":
     # Modo para obtener TODO el listado en formato JSON
     datos = generator.ver_todo(mi_key)
     print(json.dumps(datos))
+elif modo == "4":
+    # Electrón nos pide ver el historial
+    historial = generator.ver_eventos()
+    print(json.dumps(historial)) # Lo devolvemos en formato puro JSON
